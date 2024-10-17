@@ -54,7 +54,7 @@ def should_notify(alerts):
 
     already_alerted = (
         last_notification_time is not None
-        and datetime.now(timezone.utc) - last_notification_time > notification_threshold
+        and datetime.now(timezone.utc) - last_notification_time < notification_threshold
     )
 
     if is_relevant and not already_alerted:
