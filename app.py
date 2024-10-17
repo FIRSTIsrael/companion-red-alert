@@ -66,8 +66,10 @@ def notify():
 
 
 if should_send_test_notification:
+    logger.info("Sending test notification.")
     notify()
 
+logger.info("Starting up")
 while True:
     alerts = fetch_alerts()
     if should_notify(alerts):
