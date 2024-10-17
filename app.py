@@ -14,8 +14,8 @@ notification_threshold = timedelta(minutes=1, seconds=30)
 should_send_test_notification = os.getenv("TEST_MODE", "False").lower() == "true"
 
 companion_hostname = os.getenv("COMPANION_HOSTNAME", "http://127.0.0.1:8000")
-companion_hostname = companion_hostname.replace("127.0.0.1", "host.docker.internal")
-companion_hostname = companion_hostname.replace("localhost", "host.docker.internal")
+# companion_hostname = companion_hostname.replace("127.0.0.1", "host.docker.internal")
+# companion_hostname = companion_hostname.replace("localhost", "host.docker.internal")
 
 page, row, column = os.getenv("COMPANION_BUTTON_LOCATION", "1,3,7").split(",")
 red_alert_zones = os.getenv("RED_ALERT_ZONES")
@@ -31,7 +31,8 @@ def fetch_alerts():
     try:
         response = request("GET", ALERT_URL, headers={"Accept": "application/json"})
         response.raise_for_status()
-        if len(alerts) == 0:
+        raw_data = response.content.decode("utf-8-sig").rstrip()
+        if len(raw_data) == 0:
             return alerts
         alerts = response.json()
         logger.debug(f"Curernt red alerts: {alerts}")
