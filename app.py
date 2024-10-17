@@ -14,8 +14,8 @@ notification_threshold = timedelta(minutes=1, seconds=30)
 should_send_test_notification = os.getenv("TEST_MODE", "False").lower() == "true"
 
 companion_hostname = os.getenv("COMPANION_HOSTNAME", "http://127.0.0.1:8000")
-# companion_hostname = companion_hostname.replace("127.0.0.1", "host.docker.internal")
-# companion_hostname = companion_hostname.replace("localhost", "host.docker.internal")
+companion_hostname = companion_hostname.replace("127.0.0.1", "host.docker.internal")
+companion_hostname = companion_hostname.replace("localhost", "host.docker.internal")
 
 page, row, column = os.getenv("COMPANION_BUTTON_LOCATION", "1,3,7").split(",")
 red_alert_zones = os.getenv("RED_ALERT_ZONES")
