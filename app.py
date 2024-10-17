@@ -8,6 +8,7 @@ from config import ALERT_URL, POLLING_FREQUENCY_SECONDS
 logger = logging.getLogger(__name__)
 last_notification_time = None
 notification_threshold = timedelta(minutes=1, seconds=30)
+should_send_test_notification = os.getenv("TEST_MODE", False)
 
 companion_hostname = os.getenv("COMPANION_HOSTNAME", "http://127.0.0.1:8000")
 companion_hostname = companion_hostname.replace("127.0.0.1", "host.docker.internal")
@@ -19,6 +20,7 @@ if red_alert_zones is not None:
     red_alert_zones = red_alert_zones.split(",")
 else:
     red_alert_zones = []
+logger.info(f"Listening on: {red_alert_zones}")
 
 
 def fetch_alerts():
@@ -29,6 +31,7 @@ def fetch_alerts():
         if len(alerts) == 0:
             return alerts
         alerts = response.json()
+        logger.debug(f"Curernt red alerts: {alerts}")
     except HTTPError as error:
         logger.error(f"HTTP Error occured: {error}")
     except JSONDecodeError as error:
@@ -55,12 +58,15 @@ def should_notify(alerts):
 
 
 def notify():
-    logger.info(f"Sending red alert notification for zone to {companion_hostname}")
+    logger.info(f"Sending red alert notification to {companion_hostname}")
     global last_notification_time
     last_notification_time = datetime.now(timezone.utc)
     url = f"{companion_hostname}/api/location/{page}/{row}/{column}/press"
     request("POST", url)
 
+
+if should_send_test_notification:
+    notify()
 
 while True:
     alerts = fetch_alerts()
