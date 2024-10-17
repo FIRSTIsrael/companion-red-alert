@@ -5,10 +5,13 @@ from requests import request, HTTPError, JSONDecodeError
 from time import sleep
 from config import ALERT_URL, POLLING_FREQUENCY_SECONDS
 
-logger = logging.getLogger(__name__)
+logging.basicConfig(
+    level=logging.INFO, format="[%(levelname)s] %(asctime)s: %(message)s"
+)
+logger = logging.getLogger()
 last_notification_time = None
 notification_threshold = timedelta(minutes=1, seconds=30)
-should_send_test_notification = os.getenv("TEST_MODE", False).lower() == "true"
+should_send_test_notification = os.getenv("TEST_MODE", "False").lower() == "true"
 
 companion_hostname = os.getenv("COMPANION_HOSTNAME", "http://127.0.0.1:8000")
 companion_hostname = companion_hostname.replace("127.0.0.1", "host.docker.internal")
