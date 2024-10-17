@@ -18,4 +18,4 @@ In Companion, configure a button that will be pressed when a red alert is trigge
 
 `docker run -d -it --name red-alert-companion --env COMPANION_HOSTNAME=<hostname> --env COMPANION_BUTTON_LOCATION=<page,row,column> --env RED_ALERT_ZONES=<zone1,zone2,zone3> --restart=always --add-host host.docker.internal:host-gateway red-alert-companion`
 
-Note: Make sure the Hebrew place names are not reversed!
+Note: Logs will show the Hebrew names as reversed. This is normal and will work.
