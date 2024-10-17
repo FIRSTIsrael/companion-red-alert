@@ -1,4 +1,5 @@
 import os
+import json
 import logging
 from datetime import datetime, timedelta, timezone
 from requests import request, HTTPError, JSONDecodeError
@@ -34,7 +35,7 @@ def fetch_alerts():
         raw_data = response.content.decode("utf-8-sig").rstrip()
         if len(raw_data) == 0:
             return alerts
-        alerts = response.json()
+        alerts = json.loads(raw_data)
         logger.debug(f"Curernt red alerts: {alerts}")
     except HTTPError as error:
         logger.error(f"HTTP Error occured: {error}")
